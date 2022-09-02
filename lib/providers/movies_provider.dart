@@ -32,7 +32,9 @@ class MoviesProvider extends ChangeNotifier {
     return response.body;
   }
 
-  //Metodo donde lamamos parte del HTTP
+ 
+
+  //Metodo donde llamamos parte del HTTP
 
   getOnDisplayMovies() async {
     final jsonData = await _getJsonData('3/movie/now_playing');

@@ -8,7 +8,7 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //si es nulo          entonces      mando 'no-movie'
-    final Movie movie =ModalRoute.of(context)!.settings.arguments as Movie;
+    final Movie movie = ModalRoute.of(context)!.settings.arguments as Movie;
     //explicacion ModalRoute , video 112  / min 1:25
 
     return Scaffold(
@@ -16,18 +16,17 @@ class DetailsScreen extends StatelessWidget {
         //hecho para trabajar son slivers
         slivers: [
           // comportamiento PRE-PROGRAMADO cuando se hace scroll en el contenido del padre
-          _CustomAppBar(),
+          _CustomAppBar(movie: movie),
           SliverList(
             delegate: SliverChildListDelegate([
               //Puedo poner mi lista de widget estaticos
-              _PosterAndTitle(),
-              _OverView(),
-              _OverView(),
-              _OverView(),
+              _PosterAndTitle(
+                movie: movie,
+              ),
+              _OverView(movie: movie),
+              _OverView(movie: movie),
+              _OverView(movie: movie),
               CastingCards(),
-
-  
-              
             ]),
           ),
         ],
@@ -37,6 +36,10 @@ class DetailsScreen extends StatelessWidget {
 }
 
 class _CustomAppBar extends StatelessWidget {
+  final Movie movie;
+
+  const _CustomAppBar({super.key, required this.movie});
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -54,14 +57,14 @@ class _CustomAppBar extends StatelessWidget {
           width: double.infinity,
           alignment: Alignment.bottomCenter, // Centrado abajo
           padding: const EdgeInsets.only(bottom: 15),
-          child: const Text(
-            'Movie.title',
+          child: Text(
+            movie.title,
             style: TextStyle(fontSize: 16),
           ),
         ),
-        background: const FadeInImage(
-          placeholder: AssetImage('assets/loading.gif'),
-          image: NetworkImage('https://dummyimage.com/500x300'),
+        background: FadeInImage(
+          placeholder: const AssetImage('assets/loading.gif'),
+          image: NetworkImage(movie.BackdropPath),
           fit: BoxFit
               .cover, // expanda todo lo que pueda sin perder dimensiones de la imagen.
         ),
@@ -71,13 +74,13 @@ class _CustomAppBar extends StatelessWidget {
 }
 
 class _PosterAndTitle extends StatelessWidget {
+  final Movie movie;
 
-
+  const _PosterAndTitle({super.key, required this.movie});
   // debajo del SliverAppBar
 
   @override
   Widget build(BuildContext context) {
-
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Container(
@@ -88,47 +91,48 @@ class _PosterAndTitle extends StatelessWidget {
         ClipRRect(
           // redondear
           borderRadius: BorderRadius.circular(20),
-          child: const FadeInImage(
+          child: FadeInImage(
             placeholder: AssetImage('assets/no-image.jpg'),
-            image: NetworkImage('https://dummyimage.com/200x300'),
+            image: NetworkImage(movie.fullPosterImg),
             height: 150, //alto
           ),
         ),
 
-        SizedBox(width: 20),
+        SizedBox(width: 5),
 
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //size texto   //sin espacio , coloca 3 puntos  //si se pasa de dos lineas
-            Text(
-              'movie.title',
-              style: textTheme.headline5,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-            ),
-            Text(
-              'movie.title',
-              style: textTheme.subtitle1,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-            ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //size texto   //sin espacio , coloca 3 puntos  //si se pasa de dos lineas
+              Text(
+                movie.title,
+                style: textTheme.headline5,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
+              Text(
+                movie.title,
+                style: textTheme.subtitle1,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
 
-            Row(
-              children: [
-                const Icon(
-                  Icons.star_outline,
-                  size: 15,
-                  color: Colors.grey,
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text('movie.voteAverage',
-                    style: textTheme.caption)
-              ],
-            )
-          ],
+              Row(
+                children: [
+                  const Icon(
+                    Icons.star_outline,
+                    size: 15,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text('movie.voteAverage', style: textTheme.caption)
+                ],
+              )
+            ],
+          ),
         )
       ]),
     );
@@ -136,18 +140,19 @@ class _PosterAndTitle extends StatelessWidget {
 }
 
 class _OverView extends StatelessWidget {
-  const _OverView({Key? key}) : super(key: key);
+  final Movie movie;
+
+  const _OverView({Key? key, required this.movie}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       padding: const EdgeInsets.all(20),
-      child:  Text('Commodo laboris nostrud do ut excepteur exercitation. Non irure ut dolore aliqua velit qui deserunt sit in culpa. Commodo dolore aliqua elit aliquip proident ex excepteur minim reprehenderit qui nisi. Fugiat labore ut do cillum. Mollit nulla in est enim cupidatat magna velit dolore cillum non qui. Adipisicing  do sit sit sint qui.',
-      style: Theme.of(context).textTheme.subtitle1, 
-      textAlign: TextAlign.justify, //Alinear texto
-
+      child: Text(
+        movie.overview,
+        style: Theme.of(context).textTheme.subtitle1,
+        textAlign: TextAlign.justify, //Alinear texto
       ),
-      
     );
   }
 }
