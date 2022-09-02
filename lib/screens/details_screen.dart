@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pelicula_app/models/models.dart';
 import 'package:pelicula_app/widgets/widgets.dart';
 
 class DetailsScreen extends StatelessWidget {
@@ -7,7 +8,7 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //si es nulo          entonces      mando 'no-movie'
-    final String movie =ModalRoute.of(context)?.settings.arguments.toString() ?? 'no movie';
+    final Movie movie =ModalRoute.of(context)!.settings.arguments as Movie;
     //explicacion ModalRoute , video 112  / min 1:25
 
     return Scaffold(

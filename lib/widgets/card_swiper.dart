@@ -40,7 +40,7 @@ class CardSwiper extends StatelessWidget {
           return GestureDetector(
             //permite ponerle ontap , para irse a otra pantalla.
             onTap: () => Navigator.pushNamed(context, 'details',
-                arguments: 'movie-instance'),
+                arguments: movie),
             child: ClipRRect(
               // redondear puntas de caja de contenido
               borderRadius: BorderRadius.circular(20),
