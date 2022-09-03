@@ -11,6 +11,7 @@ class MoviesProvider extends ChangeNotifier {
   //se crea un listado de movie
   List<Movie> onDisplayMovies = [];
   List<Movie> popularMovies = [];
+  Map<int, List<Cast>> movieCast = {};
   int _popularPage = 0;
 
   MoviesProvider() {
@@ -32,10 +33,7 @@ class MoviesProvider extends ChangeNotifier {
     return response.body;
   }
 
- 
-
   //Metodo donde llamamos parte del HTTP
-
   getOnDisplayMovies() async {
     final jsonData = await _getJsonData('3/movie/now_playing');
 
@@ -61,5 +59,16 @@ class MoviesProvider extends ChangeNotifier {
     ]; //se desestructura
     print(popularMovies);
     notifyListeners();
+  }
+
+  Future<List<Cast>> getMovieCast(int movieId) async {
+    print('pdiendo info al servidor - actores');
+
+    final jsonData = await _getJsonData('3/movie/$movieId/credits');
+
+    final creditsResponse = CreditsResponse.fromJson(jsonData);
+    movieCast[movieId] = creditsResponse.cast;
+
+    return creditsResponse.cast;
   }
 }

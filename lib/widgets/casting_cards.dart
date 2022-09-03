@@ -1,25 +1,49 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pelicula_app/providers/movies_provider.dart';
+import 'package:provider/provider.dart';
+import '../models/credits_response.dart';
 
 class CastingCards extends StatelessWidget {
+  final int movieId;
+
+  const CastingCards(int id, {super.key, required this.movieId});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity, // todo ancho posible
-      height: 180, //alto
-      // color: Colors.red,
-      child: ListView.builder(
-          itemCount: 10,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (_, int index)=> _CastCard()),
+    final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
+
+    return FutureBuilder(
+      future: moviesProvider.getMovieCast(movieId),
+      builder: (_, AsyncSnapshot<List<Cast>> snapshot) {
+        if (!snapshot.hasData) {
+          return Container(
+            constraints: BoxConstraints(maxWidth: 150),
+            height: 180,
+            child: CupertinoActivityIndicator(),
+          );
+        }
+
+        final List<Cast> cast = snapshot.data!;
+
+        return Container(
+          width: double.infinity, // todo ancho posible
+          height: 180, //alto
+          // color: Colors.red,
+          child: ListView.builder(
+              itemCount: 10,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (_, int index) => _CastCard()),
+        );
+      },
     );
   }
 }
 
 //Encima del CastingCards esta CastCard
 
-
-
 class _CastCard extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,22 +56,23 @@ class _CastCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child:const  FadeInImage(
-              placeholder: AssetImage('assets/no-image.jpg'), 
+            child: const FadeInImage(
+              placeholder: AssetImage('assets/no-image.jpg'),
               image: NetworkImage('https://dummyimage.com/200x300'),
               height: 140,
               width: 100,
               fit: BoxFit.cover,
-              ),
+            ),
           ),
-
-          const SizedBox( height: 5,),
-
+          const SizedBox(
+            height: 5,
+          ),
           const Text(
-            'Actor.name Arias Vilela Vilela Vilela Vilela', 
+            'Actor.name Arias Vilela Vilela Vilela Vilela',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,)
+            textAlign: TextAlign.center,
+          )
         ],
       ),
     );
