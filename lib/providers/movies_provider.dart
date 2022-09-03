@@ -62,7 +62,9 @@ class MoviesProvider extends ChangeNotifier {
   }
 
   Future<List<Cast>> getMovieCast(int movieId) async {
-    print('pdiendo info al servidor - actores');
+    if (movieCast.containsKey(movieId)) return movieCast[movieId]!; //Con esto ya no habrá mas peticiones , se guarda en el map.
+
+    print('pidiendo info al servidor - actores');
 
     final jsonData = await _getJsonData('3/movie/$movieId/credits');
 
