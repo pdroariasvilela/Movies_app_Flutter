@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:pelicula_app/providers/movies_provider.dart';
 import 'package:provider/provider.dart';
 import '../models/credits_response.dart';
@@ -18,15 +17,15 @@ class CastingCards extends StatelessWidget {
       builder: (_, AsyncSnapshot<List<Cast>> snapshot) {
         if (!snapshot.hasData) {
           return Container(
-            constraints: BoxConstraints(maxWidth: 150),
+            constraints: const BoxConstraints(maxWidth: 150),
             height: 180,
-            child: CupertinoActivityIndicator(),
+            child: const CupertinoActivityIndicator(),
           );
         }
 
         final List<Cast> cast = snapshot.data!;
 
-        return Container(
+    return  Container(
           width: double.infinity, // todo ancho posible
           height: 180, //alto
           // color: Colors.red,
@@ -52,14 +51,14 @@ class _CastCard extends StatelessWidget {
       width: 110,
       height: 100,
       // color: Colors.green,
-      margin: EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
 
       child: Column(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child:  FadeInImage(
-              placeholder: AssetImage('assets/no-image.jpg'),
+              placeholder:  AssetImage('assets/no-image.jpg'),
               image: NetworkImage(actor.fullProfilePath),
               height: 140,
               width: 100,

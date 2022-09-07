@@ -16,7 +16,7 @@ class CardSwiper extends StatelessWidget {
       return Container(
         width: double.infinity,
         height: size.height * 0.5,
-        child: Center(child:CircularProgressIndicator()),
+        child: Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -35,24 +35,27 @@ class CardSwiper extends StatelessWidget {
 
           final movie =
               movies[index]; //tema provider , se pone despues de hacer todo+
-          print(movie.fullPosterImg);
+          movie.herId = 'swiper-${movie.id}';
 
           return GestureDetector(
             //permite ponerle ontap , para irse a otra pantalla.
-            onTap: () => Navigator.pushNamed(context, 'details',
-                arguments: movie),
-            child: ClipRRect(
-              // redondear puntas de caja de contenido
-              borderRadius: BorderRadius.circular(20),
-              child: FadeInImage(
-                // ANIMACION DE ENTRADA
+            onTap: () =>
+                Navigator.pushNamed(context, 'details', arguments: movie),
+            child: Hero(
+              tag: movie.herId!,
+              child: ClipRRect(
+                // redondear puntas de caja de contenido
+                borderRadius: BorderRadius.circular(20),
+                child: FadeInImage(
+                  // ANIMACION DE ENTRADA
 
-                placeholder: const AssetImage(
-                    'assets/no-image.jpg'), //IMAGEN QUE QUIERO QUE MUESTRE ANTES
-                image: NetworkImage(movie.fullPosterImg),
+                  placeholder: const AssetImage(
+                      'assets/no-image.jpg'), //IMAGEN QUE QUIERO QUE MUESTRE ANTES
+                  image: NetworkImage(movie.fullPosterImg),
 
-                fit: BoxFit
-                    .cover, // adaptar la imagen que tiene el contenedor padre
+                  fit: BoxFit
+                      .cover, // adaptar la imagen que tiene el contenedor padre
+                ),
               ),
             ),
           );
